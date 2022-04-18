@@ -1,31 +1,30 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32002.261
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "muravei", "muravei\muravei.vcxproj", "{73F30412-23C3-4F75-841D-4E74655D9A9C}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Debug|x64.ActiveCfg = Debug|x64
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Debug|x64.Build.0 = Debug|x64
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Debug|x86.ActiveCfg = Debug|Win32
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Debug|x86.Build.0 = Debug|Win32
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Release|x64.ActiveCfg = Release|x64
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Release|x64.Build.0 = Release|x64
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Release|x86.ActiveCfg = Release|Win32
-		{73F30412-23C3-4F75-841D-4E74655D9A9C}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {59409B69-CBF1-412D-ACA6-6FD0EEEB252D}
-	EndGlobalSection
-EndGlobal
+// muravei.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    cout << "Hello World!\n";
+    int r, n;
+    cin >> n >> r;
+    int* vse_puti = new int[n];//массив, где для каждого индекса будет количество путей в эту клетку, в первые 2 клетки всегда 1 путь
+    vse_puti[0] = 1;
+    vse_puti[1] = 1;
+
+    for (int i = 2; i < r; i++) {
+        int sum = 0;
+        for (int j = 0; j < i; j++) {
+            sum += vse_puti[j];
+        }
+        vse_puti[i] = sum;
+    }//заполнили первые r индексов, которые будут использоваться в дальнейшей формуле
+    if (r > 1) {
+        vse_puti[r] = vse_puti[r - 1] * 2;
+    }//заполняем индекс r
+    for (int i = r+1; i < n; i++) {
+        vse_puti[i] = vse_puti[i-1]*2-vse_puti[i-r-1];
+    }//цикл который найдет количество путей для оставшихся индексов
+    cout << vse_puti[n-1];
+}
